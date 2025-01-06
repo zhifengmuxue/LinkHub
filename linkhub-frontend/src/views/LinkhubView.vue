@@ -46,7 +46,10 @@
         <a-layout-content
           :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: 'calc(100vh - 64px - 24px)' }"
         >
-          Content
+          <SiteGrid 
+          :category="currentCategory"
+          :collapsed="collapsed" 
+          />
         </a-layout-content>
       </a-layout>
     </a-layout>
@@ -59,6 +62,8 @@ import {
   LaptopOutlined, AppstoreOutlined,RadarChartOutlined,
   MenuUnfoldOutlined, MenuFoldOutlined 
 } from '@ant-design/icons-vue';
+import SiteGrid from '@/compents/SIteGrid.vue';
+const currentCategory = ref('technology')
 
 const selectedKeys2 = ref<string[]>(['1']);
 const collapsed = ref(true);
