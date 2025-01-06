@@ -1,85 +1,66 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <!-- 外层布局容器，设置为全屏高度 -->
+  <a-layout style="height: 100vh;">
+    <!-- 头部区域 -->
+    <a-layout-header class="header">
+      <div class="logo" />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+      <a-menu
+        v-model:selectedKeys="selectedKeys1"
+        theme="dark"
+        mode="horizontal"
+        :style="{ lineHeight: '64px' }"
+        @click="handleMenuClick"
+      >
+        <a-menu-item key="1">首页</a-menu-item>
+        <a-menu-item key="2">linkhub</a-menu-item>
+        <a-menu-item key="3">其他</a-menu-item>
+      </a-menu>
+    </a-layout-header>
+    <a-layout-content>
+      <router-view></router-view>
+    </a-layout-content>
+  </a-layout>
 </template>
 
+<script lang="ts" setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router'; 
+
+const selectedKeys1 = ref<string[]>(['1']);
+const router = useRouter(); 
+
+// 处理菜单点击事件
+const handleMenuClick = ({ key }: { key: string }) => {
+  switch (key) {
+    case '1':
+      router.push('/');
+      break;
+    case '2':
+      router.push('/linkhub');
+      break;
+    case '3':
+      router.push('/other');
+      break;
+  }
+};
+</script>
+
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+#components-layout-demo-top-side-2 .logo {
+  float: left;
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: rgba(255, 255, 255, 0.3);
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.ant-row-rtl #components-layout-demo-top-side-2 .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.site-layout-background {
+  background: #fff;
 }
 </style>
