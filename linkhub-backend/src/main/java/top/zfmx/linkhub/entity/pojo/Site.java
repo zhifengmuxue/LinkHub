@@ -1,4 +1,4 @@
-package top.zfmx.linkhub.entity;
+package top.zfmx.linkhub.entity.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;

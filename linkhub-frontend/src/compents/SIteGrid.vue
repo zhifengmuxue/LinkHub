@@ -1,5 +1,5 @@
 <template>
-<div class="site-container">
+  <div class="site-container">
     <div class="site-grid">
     <a-card 
         v-for="site in sites" 
@@ -60,7 +60,7 @@ const mockSites = [
     id: 3,
     name: 'Dribbble',
     url: 'https://dribbble.com',
-    icon: 'https://cdn.dribbble.com/assets/favicon-b38525134603b9513174ec887944bde1a869eb6cd414f4d640ee48ab2a15a26b.ico',
+    icon: '',
     description: '设计师社区'
   },
   {
@@ -88,21 +88,21 @@ const mockSites = [
     id: 7,
     name: 'Facebook',
     url: 'https://facebook.com',
-    icon: 'https://static.xx.fbcdn.net/rsrc.php/yD/r/d4ZIVX-5C-b.ico',
+    icon: '',
     description: '社交网络'
   },
   {
     id: 8,
     name: 'Instagram',
     url: 'https://instagram.com',
-    icon: 'https://www.instagram.com/static/images/ico/favicon.ico',
+    icon: '',
     description: '图片分享平台'
   },
   {
     id: 9,
     name: 'LinkedIn',
     url: 'https://linkedin.com',
-    icon: 'https://static.licdn.com/sc/h/akt4ae504epesldzj74dzred8',
+    icon: '',
     description: '职业社交平台'
   },
   {
@@ -116,7 +116,7 @@ const mockSites = [
     id: 11,
     name: 'Netflix',
     url: 'https://netflix.com',
-    icon: 'https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2016.ico',
+    icon: '',
     description: '流媒体平台'
   },
   {
@@ -125,7 +125,7 @@ const mockSites = [
     url: 'https://spotify.com',
     icon: 'https://open.spotifycdn.com/cdn/images/favicon32.b64ecc03.png',
     description: '音乐流媒体平台'
-  },
+  },                                  
   {
     id: 13,
     name: 'Stack Overflow',
@@ -180,33 +180,6 @@ const openSite = (url: string) => {
   window.open(url, '_blank');
 };
 
-// const fetchSitesFromBackend = async () => {
-//   try {
-//     loading.value = true;
-//     const response = await axios.get('/api/sites', {
-//       params: {
-//         category: props.category,
-//         page: currentPage.value,
-//         size: pageSize.value
-//       }
-//     });
-//     sites.value = response.data.content;
-//     totalSites.value = response.data.totalElements;
-//   } catch (error) {
-//     console.error('请求失败，使用测试数据', error);
-//     sites.value = mockSites;
-//     totalSites.value = mockSites.length;
-//   } finally {
-//     loading.value = false;
-//   }
-// };
-
-const handlePageChange = (page: number) => {
-  currentPage.value = page;
-  fetchSitesFromBackend(); // 切换页码时重新加载数据
-  window.scrollTo({ top: 0, behavior: 'smooth' }); // 滚动到顶部
-};
-
 const fetchSitesFromBackend = async () => {
   try {
     loading.value = true;
@@ -218,6 +191,9 @@ const fetchSitesFromBackend = async () => {
     const endIndex = startIndex + pageSize.value;
     sites.value = mockSites.slice(startIndex, endIndex);
     totalSites.value = mockSites.length;
+
+    // 动态预加载图标
+    preloadIcons(sites.value);
   } catch (error) {
     console.error('请求失败，使用测试数据', error);
     const startIndex = (currentPage.value - 1) * pageSize.value;
@@ -227,6 +203,23 @@ const fetchSitesFromBackend = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+// 动态预加载图标
+const preloadIcons = (sites: Site[]) => {
+  sites.forEach(site => {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.href = site.icon;
+    link.as = 'image';
+    document.head.appendChild(link);
+  });
+};
+
+const handlePageChange = (page: number) => {
+  currentPage.value = page;
+  fetchSitesFromBackend(); // 切换页码时重新加载数据
+  window.scrollTo({ top: 0, behavior: 'smooth' }); // 滚动到顶部
 };
 
 // 监听 category 变化

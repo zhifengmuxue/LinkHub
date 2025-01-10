@@ -1,4 +1,4 @@
-package top.zfmx.linkhub.vo;
+package top.zfmx.linkhub.entity.vo;
 
 import lombok.Data;
 
