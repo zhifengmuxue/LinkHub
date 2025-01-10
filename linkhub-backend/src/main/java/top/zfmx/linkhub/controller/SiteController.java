@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import top.zfmx.linkhub.service.SiteService;
 import top.zfmx.linkhub.entity.vo.SiteVO;
 
@@ -31,6 +32,7 @@ public class SiteController {
         }else{
             response.put("code","200");
             response.put("message","Success");
+            response.put("total",sitePage.getTotal());
             response.put("data",sitePage.getRecords());
         }
         return response;
