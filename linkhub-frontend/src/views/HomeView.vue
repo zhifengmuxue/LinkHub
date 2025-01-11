@@ -13,7 +13,7 @@
     <div class="description-section">
         <p class="description">
         LinkHub 是一个专注于提升开发效率的工具集合平台。<br />
-        在这里，你可以快速找到前端开发、文档查阅、工具推荐等资源，<br />
+        在这里，你可以快速找到前后端开发、文档查阅、工具推荐等资源，<br />
         让开发变得更加简单和高效。
         </p>
     </div>

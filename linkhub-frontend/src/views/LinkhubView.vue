@@ -25,7 +25,7 @@
             <template #icon>
               <RadarChartOutlined />
             </template>
-            <span v-if="!collapsed">前端实验室</span>
+            <span v-if="!collapsed">盖勒瑞</span>
           </a-menu-item>
           <a-menu-item key="2">
             <template #icon>
@@ -43,7 +43,7 @@
             <template #icon>
               <laptop-outlined />
             </template>
-            <span v-if="!collapsed">Blogs</span>
+            <span v-if="!collapsed">博客站点</span>
           </a-menu-item>
           <a-menu-item key="btn" @click="toggleCollapsed">
             <template #icon>
@@ -80,11 +80,11 @@ import SiteGrid from '@/compents/SIteGrid.vue';
 
 const categoryMap = {
   '0': '',              // 全部
-  '1': 'frontend-lab',  // 技术
+  '1': 'gallery',  // 技术
   '2': 'tools',       // 工具
   '3': 'document',       // 文档
   '4': 'blogs',      // 博客
-  'btn': 'null',
+  'btn': 'null'
 };
 
 const currentCategory = ref(categoryMap['0']); // 默认分类

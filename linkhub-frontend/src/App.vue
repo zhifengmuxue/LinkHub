@@ -11,7 +11,8 @@
       >
         <a-menu-item key="1">首页</a-menu-item>
         <a-menu-item key="2">仓库</a-menu-item>
-        <a-menu-item key="3">其他</a-menu-item>
+        <a-menu-item key="3">工具</a-menu-item>
+        <a-menu-item key="4">设置</a-menu-item>
       </a-menu>
     </a-layout-header>
     <a-layout-content>
@@ -32,7 +33,8 @@ const updateSelectedKeys = () => {
   const keyMap: Record<string, string> = {
     '/': '1',
     '/linkhub': '2',
-    '/other': '3',
+    '/tools': '3',
+    '/setting': '4'
   };
   selectedKeys.value = [keyMap[route.path] || '1'];
 };
@@ -53,7 +55,10 @@ const handleMenuClick = ({ key }: { key: string }) => {
       router.push('/linkhub');
       break;
     case '3':
-      router.push('/other');
+      router.push('/tools');
+      break;
+    case '4':
+      router.push('/setting');
       break;
   }
 };
