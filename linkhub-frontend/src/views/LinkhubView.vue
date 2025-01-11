@@ -10,27 +10,34 @@
         style="background: #fff"
       >
         <a-menu
-          v-model:selectedKeys="selectedKeys2"
+          v-model:selectedKeys="selectedKeys"
           mode="inline"
           :style="{ height: '100%', borderRight: 0 }"
+          @click="handleMenuClick"
         >
+          <a-menu-item key="0">
+            <template #icon>
+              <HomeOutlined />
+            </template>
+            <span v-if="!collapsed">全部</span>
+          </a-menu-item>
           <a-menu-item key="1">
             <template #icon>
               <RadarChartOutlined />
             </template>
-            <span v-if="!collapsed">option1</span>
+            <span v-if="!collapsed">前端实验室</span>
           </a-menu-item>
           <a-menu-item key="2">
             <template #icon>
               <AppstoreOutlined />
             </template>
-            <span v-if="!collapsed">option2</span>
+            <span v-if="!collapsed">开发工具</span>
           </a-menu-item>
           <a-menu-item key="3">
             <template #icon>
               <laptop-outlined />
             </template>
-            <span v-if="!collapsed">option2</span>
+            <span v-if="!collapsed">Blogs</span>
           </a-menu-item>
           <a-menu-item key="4" @click="toggleCollapsed">
             <template #icon>
@@ -60,16 +67,29 @@
 import { ref } from 'vue';
 import { 
   LaptopOutlined, AppstoreOutlined,RadarChartOutlined,
-  MenuUnfoldOutlined, MenuFoldOutlined 
+  MenuUnfoldOutlined, MenuFoldOutlined , HomeOutlined 
 } from '@ant-design/icons-vue';
 import SiteGrid from '@/compents/SIteGrid.vue';
-const currentCategory = ref('technology')
 
-const selectedKeys2 = ref<string[]>(['1']);
+
+const categoryMap = {
+  '0': '',              // 全部
+  '1': 'frontend-lab',  // 技术
+  '2': 'tools',       // 工具
+  '3': 'blogs',       // 博客
+};
+
+const currentCategory = ref(categoryMap['0']); // 默认分类
+const selectedKeys = ref<string[]>(['0']); // 默认选中第一个菜单项
 const collapsed = ref(true);
 
 const toggleCollapsed = () => {
   collapsed.value = !collapsed.value;
+};
+
+const handleMenuClick = ({ key }: { key: keyof typeof categoryMap }) => {
+  selectedKeys.value = [key];
+  currentCategory.value = categoryMap[key];
 };
 </script>
 

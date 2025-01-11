@@ -24,11 +24,35 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router'; 
+import { ref, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router'; // 添加 useRoute
 
 const selectedKeys1 = ref<string[]>(['1']);
-const router = useRouter(); 
+const router = useRouter();
+const route = useRoute(); // 获取当前路由
+
+// 根据路由设置 selectedKeys1
+const updateSelectedKeys = () => {
+  switch (route.path) {
+    case '/':
+      selectedKeys1.value = ['1'];
+      break;
+    case '/linkhub':
+      selectedKeys1.value = ['2'];
+      break;
+    case '/other':
+      selectedKeys1.value = ['3'];
+      break;
+    default:
+      selectedKeys1.value = ['1'];
+  }
+};
+
+// 初始化时设置 selectedKeys1
+updateSelectedKeys();
+
+// 监听路由变化
+watch(() => route.path, updateSelectedKeys);
 
 // 处理菜单点击事件
 const handleMenuClick = ({ key }: { key: string }) => {

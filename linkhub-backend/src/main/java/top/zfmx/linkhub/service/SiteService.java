@@ -7,5 +7,7 @@ import top.zfmx.linkhub.entity.pojo.Site;
 import top.zfmx.linkhub.entity.vo.SiteVO;
 
 public interface SiteService extends IService<Site> {
-    Page<SiteVO> getSitesWithCategory(Page<SiteVO> page);
+    Page<SiteVO> getPage(Page<SiteVO> page);
+    Page<Site> getByCategory(Page<Site> page, Long categoryId);
+    Page<SiteVO> getByCategoryName(Page<SiteVO> page, String categoryName);
 }

@@ -13,9 +13,19 @@ public class SiteServiceImpl
         extends ServiceImpl<SiteMapper, Site>
         implements SiteService {
 
+    @Override
+    public Page<SiteVO> getPage(Page<SiteVO> page) {
+        return page.setRecords(this.baseMapper.selectByPage(page));
+    }
 
     @Override
-    public Page<SiteVO> getSitesWithCategory(Page<SiteVO> page) {
-        return page.setRecords(this.baseMapper.selectSitesWithCategory(page));
+    public Page<Site> getByCategory(Page<Site> page, Long categoryId) {
+        return page.setRecords(this.baseMapper.selectByCategoryId(page,categoryId));
     }
+
+    @Override
+    public Page<SiteVO> getByCategoryName(Page<SiteVO> page, String categoryName) {
+        return page.setRecords(this.baseMapper.selectByCategoryName(page,categoryName));
+    }
+
 }

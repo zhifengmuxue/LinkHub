@@ -15,5 +15,15 @@ public interface SiteMapper
 
     @Select("SELECT s.name, s.url, s.icon, s.description, c.name AS categoryName " +
             "FROM site s LEFT JOIN category c ON s.category_id = c.id")
-    List<SiteVO> selectSitesWithCategory(Page<?> page);
+    List<SiteVO> selectByPage(Page<?> page);
+
+    @Select("SELECT s.name, s.url, s.icon, s.description, c.id AS categoryId " +
+            "FROM site s LEFT JOIN category c ON s.category_id = c.id " +
+            "WHERE s.category_id = #{categoryId}")
+    List<Site> selectByCategoryId(Page<?> page, Long categoryId);
+
+    @Select("SELECT s.name, s.url, s.icon, s.description, c.name AS categoryName " +
+            "FROM site s LEFT JOIN category c ON s.category_id = c.id " +
+            "WHERE c.name = #{categoryName}")
+    List<SiteVO> selectByCategoryName(Page<?> page, String categoryName);
 }

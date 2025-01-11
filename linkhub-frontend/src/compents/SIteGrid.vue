@@ -42,8 +42,6 @@ interface Site {
   categoryName: string;
 }
 
-
-
 const props = defineProps<{
   category: string;
   collapsed: boolean;
@@ -67,6 +65,7 @@ const fetchSites = async () => {
       params: {
         page: currentPage.value,
         size: pageSize.value,
+        categoryName: props.category,
       },
     });
     if (response.data.code === '200') {
