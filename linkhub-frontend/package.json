@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
+    "animate.css": "^4.1.1",
     "ant-design-vue": "^4.2.6",
     "axios": "^1.7.9",
     "vue": "^3.5.13",

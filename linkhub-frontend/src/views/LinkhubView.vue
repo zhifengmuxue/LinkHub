@@ -35,11 +35,17 @@
           </a-menu-item>
           <a-menu-item key="3">
             <template #icon>
+              <BookOutlined />
+            </template>
+            <span v-if="!collapsed">官方文档</span>
+          </a-menu-item>
+          <a-menu-item key="4">
+            <template #icon>
               <laptop-outlined />
             </template>
             <span v-if="!collapsed">Blogs</span>
           </a-menu-item>
-          <a-menu-item key="4" @click="toggleCollapsed">
+          <a-menu-item key="btn" @click="toggleCollapsed">
             <template #icon>
               <menu-unfold-outlined v-if="collapsed" />
               <menu-fold-outlined v-else />
@@ -67,7 +73,7 @@
 import { ref } from 'vue';
 import { 
   LaptopOutlined, AppstoreOutlined,RadarChartOutlined,
-  MenuUnfoldOutlined, MenuFoldOutlined , HomeOutlined 
+  MenuUnfoldOutlined, MenuFoldOutlined , HomeOutlined ,BookOutlined
 } from '@ant-design/icons-vue';
 import SiteGrid from '@/compents/SIteGrid.vue';
 
@@ -76,7 +82,9 @@ const categoryMap = {
   '0': '',              // 全部
   '1': 'frontend-lab',  // 技术
   '2': 'tools',       // 工具
-  '3': 'blogs',       // 博客
+  '3': 'document',       // 文档
+  '4': 'blogs',      // 博客
+  'btn': 'null',
 };
 
 const currentCategory = ref(categoryMap['0']); // 默认分类
@@ -88,6 +96,7 @@ const toggleCollapsed = () => {
 };
 
 const handleMenuClick = ({ key }: { key: keyof typeof categoryMap }) => {
+  if (key === 'btn') return; // 跳过 key=5 的逻辑
   selectedKeys.value = [key];
   currentCategory.value = categoryMap[key];
 };

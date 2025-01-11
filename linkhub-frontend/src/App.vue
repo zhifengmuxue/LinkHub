@@ -1,19 +1,16 @@
 <template>
-  <!-- 外层布局容器，设置为全屏高度 -->
   <a-layout style="height: 100vh;">
     <!-- 头部区域 -->
     <a-layout-header class="header">
       <div class="logo" />
-
       <a-menu
-        v-model:selectedKeys="selectedKeys1"
-        theme="dark"
+        v-model:selectedKeys="selectedKeys"
         mode="horizontal"
-        :style="{ lineHeight: '64px' }"
+        :style="{ lineHeight: '64px', background: '#f0f2f5' }"
         @click="handleMenuClick"
       >
         <a-menu-item key="1">首页</a-menu-item>
-        <a-menu-item key="2">linkhub</a-menu-item>
+        <a-menu-item key="2">仓库</a-menu-item>
         <a-menu-item key="3">其他</a-menu-item>
       </a-menu>
     </a-layout-header>
@@ -25,30 +22,22 @@
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router'; // 添加 useRoute
+import { useRouter, useRoute } from 'vue-router';
 
-const selectedKeys1 = ref<string[]>(['1']);
+const selectedKeys = ref<string[]>(['1']);
 const router = useRouter();
-const route = useRoute(); // 获取当前路由
+const route = useRoute();
 
-// 根据路由设置 selectedKeys1
 const updateSelectedKeys = () => {
-  switch (route.path) {
-    case '/':
-      selectedKeys1.value = ['1'];
-      break;
-    case '/linkhub':
-      selectedKeys1.value = ['2'];
-      break;
-    case '/other':
-      selectedKeys1.value = ['3'];
-      break;
-    default:
-      selectedKeys1.value = ['1'];
-  }
+  const keyMap: Record<string, string> = {
+    '/': '1',
+    '/linkhub': '2',
+    '/other': '3',
+  };
+  selectedKeys.value = [keyMap[route.path] || '1'];
 };
 
-// 初始化时设置 selectedKeys1
+// 初始化时设置 selectedKeys
 updateSelectedKeys();
 
 // 监听路由变化
@@ -71,6 +60,32 @@ const handleMenuClick = ({ key }: { key: string }) => {
 </script>
 
 <style scoped>
+/* 导航栏样式 */
+.header {
+  background-color: #f0f2f5 !important; /* 与首页和 Linkhub 页面一致的背景色 */
+  border-bottom: 1px solid #e8e8e8 !important; /* 添加浅色底部边框 */
+}
+
+.ant-menu {
+  background-color: transparent !important; /* 透明背景 */
+}
+
+.ant-menu-item {
+  color: #333 !important; /* 文字颜色 */
+  font-weight: 500; /* 加粗文字 */
+}
+
+.ant-menu-item:hover {
+  color: #1890ff !important; /* 悬停时使用主题色 */
+  background-color: rgba(24, 144, 255, 0.1) !important; /* 悬停背景色 */
+}
+
+.ant-menu-item-selected {
+  color: #1890ff !important; /* 选中项文字颜色 */
+  border-bottom: 2px solid #1890ff !important; /* 选中项底部边框 */
+}
+
+/* 其他样式保持不变 */
 #components-layout-demo-top-side-2 .logo {
   float: left;
   width: 120px;

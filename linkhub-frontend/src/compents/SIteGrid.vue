@@ -59,6 +59,7 @@ const openSite = (url: string) => {
 };
 
 const fetchSites = async () => {
+  sites.value = []; // 先清空数据
   loading.value = true;
   try {
     const response = await axios.get('api/sites', {
@@ -70,9 +71,8 @@ const fetchSites = async () => {
     });
     if (response.data.code === '200') {
       sites.value = response.data.data;
-      total.value = response.data.total || response.data.data.length; // 根据后端返回调整
-    } else {
-      console.error('Failed to fetch sites:', response.data.message);
+      total.value = response.data.total || response.data.data.length;
+      preloadIcons(sites.value);
     }
   } catch (error) {
     console.error('Error fetching sites:', error);
@@ -80,6 +80,7 @@ const fetchSites = async () => {
     loading.value = false;
   }
 };
+
 
 // 动态预加载图标
 const preloadIcons = (sites: Site[]) => {
@@ -102,7 +103,7 @@ const handlePageChange = (page: number) => {
   window.scrollTo({ top: 0, behavior: 'smooth' }); // 滚动到顶部
 };
 
-// 监听 category 变化
+// 仅在 category 变化时触发请求
 watch(() => props.category, fetchSites, { immediate: true });
 watch(() => props.collapsed, () => {
   fetchSites(); // collapsed 变化时重新加载数据
