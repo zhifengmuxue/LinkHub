@@ -32,7 +32,7 @@
         </a-layout-sider>
   
         <!-- 右侧内容区域 -->
-        <a-layout-content>
+        <a-layout-content style="padding: 24px; overflow-y: auto;">
           <ShortyQR />
         </a-layout-content>
       </a-layout>

@@ -12,7 +12,7 @@
         <a-menu-item key="1">首页</a-menu-item>
         <a-menu-item key="2">仓库</a-menu-item>
         <a-menu-item key="3">工具</a-menu-item>
-        <a-menu-item key="4">设置</a-menu-item>
+        <!-- <a-menu-item key="4">设置</a-menu-item> -->
       </a-menu>
     </a-layout-header>
     <a-layout-content>
