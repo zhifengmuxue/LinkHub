@@ -75,7 +75,7 @@ import {
   LaptopOutlined, AppstoreOutlined,RadarChartOutlined,
   MenuUnfoldOutlined, MenuFoldOutlined , HomeOutlined ,BookOutlined
 } from '@ant-design/icons-vue';
-import SiteGrid from '@/compents/SIteGrid.vue';
+import SiteGrid from '@/compents/SiteGrid.vue';
 
 
 const categoryMap = {

@@ -8,6 +8,7 @@ create table site(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     url VARCHAR(255) NOT NULL,
+    icon VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
     category_id BIGINT NOT NULL,
     FOREIGN KEY (category_id) REFERENCES category(id)

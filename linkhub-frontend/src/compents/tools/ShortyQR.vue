@@ -108,7 +108,7 @@ import axios from 'axios';
 const longUrl = ref('');
 const shortUrl = ref('');
 const isShortening = ref(false);
-const BASE_URL = 'http://localhost:8080/short/'
+const BASE_URL = 'http://localhost:8080/link/'
 const shortenUrl = async () => {
   if (!longUrl.value) {
     message.warning('请输入长链接');
@@ -116,11 +116,13 @@ const shortenUrl = async () => {
   }
   isShortening.value = true;
   try {
-    // 调用后端 API 生成短码
-    const response = await axios.post('/api/short/', {
+    const response = await axios.post('api/link/generate', {
       url: longUrl.value,
+    }, {
+      headers: {
+        'Content-Type': 'application/json', // 正确设置请求头
+      },
     });
-    // 在前端拼接完整 URL
     shortUrl.value = BASE_URL + response.data.shortCode;
     message.success('短链接生成成功');
   } catch (error) {

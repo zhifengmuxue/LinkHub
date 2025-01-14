@@ -69,9 +69,9 @@ const fetchSites = async () => {
         categoryName: props.category,
       },
     });
-    if (response.data.code === '200') {
-      sites.value = response.data.data;
-      total.value = response.data.total || response.data.data.length;
+    if (response.data.code === 200) { // code 改为数字
+      sites.value = response.data.data.records; // 访问 data.records
+      total.value = response.data.data.total; // 访问 data.total
       preloadIcons(sites.value);
     }
   } catch (error) {
