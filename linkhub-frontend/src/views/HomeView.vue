@@ -21,7 +21,12 @@
 
     <!-- 页脚 -->
     <div class="footer animate__animated animate__fadeInUp">
-    <p>© 2024 LinkHub. All rights reserved.</p>
+    <p>© 2025 LinkHub. All rights reserved.</p>
+    <p>
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">
+        浙ICP备2024065193号-2
+        </a>
+    </p>
     </div>
 </div>
 </template>
@@ -31,98 +36,107 @@ import 'animate.css'; // 引入 animate.css
 </script>
 
 <style scoped>
-
 .home-container {
-    display: flex;
-    gap: 48px;
-    width: 100vw;
-    margin: 0 auto; /* 移除负 margin */
-    padding: 100px 24px 80px; /* 增加顶部 padding */
-    min-height: calc(100vh - 80px);
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    background-color: #fff; /* 确保容器背景色一致 */
+  display: flex;
+  gap: 48px;
+  width: 100vw;
+  margin: 0 auto;
+  padding: 100px 24px 80px;
+  min-height: calc(100vh - 80px);
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #fff;
 }
+
 .left-section {
-flex: 1;
-max-width: 400px; /* 左侧区域宽度 */
-text-align: center; /* 左侧内容居中 */
+  flex: 1;
+  max-width: 400px;
+  text-align: center;
 }
 
 .hero-section {
-margin-bottom: 24px;
+  margin-bottom: 24px;
 }
 
 .title {
-font-size: 64px;
-font-weight: bold;
-background: linear-gradient(45deg, #001529, #1890ff);
-background-clip: text; 
--webkit-background-clip: text; 
-color: transparent; 
-margin-bottom: 16px;
-text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
+  font-size: 64px;
+  font-weight: bold;
+  background: linear-gradient(45deg, #001529, #1890ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-bottom: 16px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}   
 
 .subtitle {
-font-size: 24px;
-color: #666;
-font-weight: 500;
+  font-size: 24px;
+  color: #666;
+  font-weight: 500;
 }
 
 .right-section {
-flex: 1;
-max-width: 600px; /* 右侧区域宽度 */
-text-align: center; /* 右侧内容居中 */
+  flex: 1;
+  max-width: 600px;
+  text-align: center;
 }
 
 .description-section {
-margin-bottom: 24px;
+  margin-bottom: 24px;
 }
 
 .description {
-font-size: 18px;
-line-height: 1.8;
-color: #444;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #444;
 }
 
 .footer {
-text-align: center;
-padding: 24px;
-color: #666;
-font-size: 14px;
-opacity: 0.8;
-position: fixed;
-bottom: 0;
-left: 0;
-width: 100%;
-background-color: #fff; 
+  text-align: center;
+  padding: 24px;
+  color: #666;
+  font-size: 14px;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+}
+
+.footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
 }
 
 /* 响应式布局 */
 @media (max-width: 768px) {
-.home-container {
+  .home-container {
     flex-direction: column;
     gap: 24px;
     padding: 48px 24px;
-}
+  }
 
-.left-section,
-.right-section {
+  .left-section,
+  .right-section {
     max-width: 100%;
-}
+  }
 
-.title {
+  .title {
     font-size: 48px;
-}
+  }
 
-.subtitle {
+  .subtitle {
     font-size: 20px;
-}
+  }
 
-.description {
+  .description {
     font-size: 16px;
-}
+  }
 }
 </style>

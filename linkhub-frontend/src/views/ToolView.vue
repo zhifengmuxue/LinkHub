@@ -142,7 +142,7 @@ const toggleCollapsed = () => {
   collapsed.value = !collapsed.value;
 };
 
-const handleMenuClick = ({ key }: { key: keyof typeof categoryMap }) => {
+const handleMenuClick = ({ key }: { key: keyof typeof categoryMap | 'btn' }) => {
   if (key === 'btn') return;
   selectedKeys.value = [key];
 };
@@ -154,81 +154,53 @@ const showToolModal = (tool: Tool) => {
 </script>
 
 <style scoped>
-
 .tool-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px; /* 缩小整体间距 */
-  padding: 16px; /* 缩小容器内边距 */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* 调整卡片最小宽度 */
+  gap: 12px; /* 调整间距 */
+  padding: 12px; /* 调整内边距 */
 }
-
 
 .tool-card {
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* 使用相同的动画曲线 */
-  border-radius: 12px; /* 调整圆角 */
+  transition: transform 0.2s; /* 保留悬停动画 */
+  border-radius: 8px; /* 调整圆角 */
   overflow: hidden;
   background: #fff;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  min-height: 140px; /* 调整卡片高度 */
-  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), 
-              box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-
+  min-height: 120px; /* 调整最小高度 */
 }
 
 .tool-card:hover {
-  transform: translateY(-4px); /* 调整上移距离 */
-  border-color: rgba(13, 13, 13, 0.5); /* 调整边框颜色透明度 */
-  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1), 
-              0 4px 6px -2px rgba(59, 130, 246, 0.05); /* 调整阴影强度 */
-
+  transform: translateY(-2px); /* 调整悬停效果 */
 }
 
 .tool-info {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 16px; /* 调整内边距 */
+  padding: 12px; /* 调整内边距 */
   text-align: left;
   height: 100%;
 }
 
 .tool-name {
-  font-size: 16px; /* 调整文字大小 */
-  font-weight: 500;
+  font-size: 15px; /* 调整字体大小 */
+  font-weight: bold;
   color: #111827;
-  margin-bottom: 8px; /* 调整间距 */
+  margin-bottom: 6px; /* 调整间距 */
 }
 
 .tool-description {
-  font-size: 14px; /* 调整文字大小 */
+  font-size: 13px; /* 调整字体大小 */
   color: #6b7280;
-  line-height: 1.6; /* 调整行高 */
-  margin-bottom: 12px; /* 调整间距 */
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   flex-grow: 1;
-}
-
-.tool-actions {
-  width: 100%;
-}
-
-.tool-actions .ant-btn {
-  width: 100%;
-  border-radius: 8px; /* 调整按钮圆角 */
-  height: 36px; /* 调整按钮高度 */
-  font-size: 14px; /* 调整按钮文字大小 */
-  padding: 0 16px; /* 调整按钮内边距 */
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.tool-actions .ant-btn:hover {
-  background-color: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
 }
 </style>

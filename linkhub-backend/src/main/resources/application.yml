@@ -1,16 +1,16 @@
 # 服务器
-# spring:
-#   datasource:
-#     url: jdbc:mysql://121.199.75.130:3306/linkhub?useSSL=false
-#     username: zfmx
-#     password: linkhub3314ZFMX
-#     driver-class-name: com.mysql.cj.jdbc.Driver
-# server:
-#   port: 8881
-
 spring:
-    datasource:
-        url: jdbc:mysql://localhost:3307/linkhub?useSSL=false
-        username: root
-        password: 123456
-        driver-class-name: com.mysql.cj.jdbc.Driver
+ datasource:
+  url: jdbc:mysql://121.199.75.130:3306/linkhub?useSSL=false
+  username: zfmx
+  password: linkhub3314ZFMX
+  driver-class-name: com.mysql.cj.jdbc.Driver
+server:
+ port: 8881
+
+#spring:
+#    datasource:
+#        url: jdbc:mysql://localhost:3307/linkhub?useSSL=false
+#        username: root
+#        password: 123456
+#        driver-class-name: com.mysql.cj.jdbc.Driver
