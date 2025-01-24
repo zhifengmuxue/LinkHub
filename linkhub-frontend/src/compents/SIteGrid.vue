@@ -49,7 +49,7 @@ const props = defineProps<{
 
 // 分页相关
 const currentPage = ref(1);
-const pageSize = computed(() => props.collapsed ? 16 : 12);
+const pageSize = 16;
 const sites = ref<Site[]>([]);
 const total = ref(0);
 const loading = ref(false);
@@ -65,7 +65,7 @@ const fetchSites = async () => {
     const response = await axios.get('api/sites', {
       params: {
         page: currentPage.value,
-        size: pageSize.value,
+        size: pageSize,
         categoryName: props.category,
       },
     });
