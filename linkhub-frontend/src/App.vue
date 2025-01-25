@@ -1,6 +1,5 @@
 <template>
   <a-layout style="height: 100vh;">
-    <!-- 头部区域 -->
     <a-layout-header class="header">
       <div class="logo" />
       <a-menu
@@ -16,7 +15,11 @@
       </a-menu>
     </a-layout-header>
     <a-layout-content>
-      <router-view></router-view>
+      <router-view v-slot="{ Component }">
+        <transition name="page-slide" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </a-layout-content>
   </a-layout>
 </template>
@@ -65,32 +68,59 @@ const handleMenuClick = ({ key }: { key: string }) => {
 </script>
 
 <style scoped>
+/* 布局样式 */
+.ant-layout {
+  height: 100vh;
+}
+
 /* 导航栏样式 */
 .header {
-  background-color: #f0f2f5 !important; /* 与首页和 Linkhub 页面一致的背景色 */
-  border-bottom: 1px solid #e8e8e8 !important; /* 添加浅色底部边框 */
+  background-color: #f0f2f5 !important;
+  border-bottom: 1px solid #e8e8e8 !important;
 }
 
 .ant-menu {
-  background-color: transparent !important; /* 透明背景 */
+  background-color: transparent !important;
 }
 
 .ant-menu-item {
-  color: #333 !important; /* 文字颜色 */
-  font-weight: 500; /* 加粗文字 */
+  color: #333 !important;
+  font-weight: 500;
 }
 
 .ant-menu-item:hover {
-  color: #1890ff !important; /* 悬停时使用主题色 */
-  background-color: rgba(24, 144, 255, 0.1) !important; /* 悬停背景色 */
+  color: #1890ff !important;
+  background-color: rgba(24, 144, 255, 0.1) !important;
 }
 
 .ant-menu-item-selected {
-  color: #1890ff !important; /* 选中项文字颜色 */
-  border-bottom: 2px solid #1890ff !important; /* 选中项底部边框 */
+  color: #1890ff !important;
+  border-bottom: 2px solid #1890ff !important;
 }
 
-/* 其他样式保持不变 */
+/* 内容区域样式 */
+.ant-layout-content {
+  position: relative;
+  overflow: hidden;
+}
+
+/* 页面切换动画 */
+.page-slide-enter-active,
+.page-slide-leave-active {
+  transition: all 0.5s ease;
+}
+
+.page-slide-enter-from {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.page-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-50px);
+}
+
+/* 其他样式 */
 #components-layout-demo-top-side-2 .logo {
   float: left;
   width: 120px;
@@ -106,5 +136,18 @@ const handleMenuClick = ({ key }: { key: string }) => {
 
 .site-layout-background {
   background: #fff;
+}
+
+/* 弹跳动画 */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translate(-50%, 0);
+  }
+  40% {
+    transform: translate(-50%, -10px);
+  }
+  60% {
+    transform: translate(-50%, -5px);
+  }
 }
 </style>

@@ -17,21 +17,13 @@
         </div>
     </a-card>
     </div>
-    
-    <!-- 分页组件 -->
-    <a-pagination
-        v-model:current="currentPage"
-        simple
-        :total="total"
-        class="pagination"
-        @change="handlePageChange"
-    />
+  
 </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, computed } from 'vue';
-import { onMounted } from 'vue';
+import { ref, watch } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
 
 interface Site {
@@ -49,7 +41,7 @@ const props = defineProps<{
 
 // 分页相关
 const currentPage = ref(1);
-const pageSize = 16;
+const pageSize = 24;
 const sites = ref<Site[]>([]);
 const total = ref(0);
 const loading = ref(false);
@@ -58,9 +50,18 @@ const openSite = (url: string) => {
   window.open(url, '_blank');
 };
 
-const fetchSites = async () => {
-  sites.value = []; // 先清空数据
-  loading.value = true;
+const isFetchingMore = ref(false); 
+
+const fetchSites = async (isLoadMore = false) => {
+  if (loading.value || isFetchingMore.value) return;
+  
+  if (!isLoadMore) {
+    sites.value = []; // 初始加载时清空数据
+    loading.value = true;
+  } else {
+    isFetchingMore.value = true;
+  }
+
   try {
     const response = await axios.get('api/sites', {
       params: {
@@ -69,18 +70,53 @@ const fetchSites = async () => {
         categoryName: props.category,
       },
     });
-    if (response.data.code === 200) { // code 改为数字
-      sites.value = response.data.data.records; // 访问 data.records
-      total.value = response.data.data.total; // 访问 data.total
-      preloadIcons(sites.value);
+    if (response.data.code === 200) {
+      if (isLoadMore) {
+        sites.value = [...sites.value, ...response.data.data.records];
+      } else {
+        sites.value = response.data.data.records;
+      }
+      total.value = response.data.data.total;
+      preloadIcons(response.data.data.records);
     }
   } catch (error) {
     console.error('Error fetching sites:', error);
   } finally {
     loading.value = false;
+    isFetchingMore.value = false;
   }
 };
 
+const handleScroll = () => {
+  const container = document.querySelector('.site-container');
+  if (!container) return;
+
+  const { scrollTop, scrollHeight, clientHeight } = container;
+  // 调整触发加载的阈值
+  if (scrollHeight - (scrollTop + clientHeight) < 50 && 
+      !loading.value && 
+      !isFetchingMore.value &&
+      sites.value.length < total.value) {
+    currentPage.value++;
+    fetchSites(true);
+  }
+};
+
+// 修改 onMounted 和 onUnmounted
+onMounted(() => {
+  fetchSites();
+  const container = document.querySelector('.site-container');
+  if (container) {
+    container.addEventListener('scroll', handleScroll);
+  }
+});
+
+onUnmounted(() => {
+  const container = document.querySelector('.site-container');
+  if (container) {
+    container.removeEventListener('scroll', handleScroll);
+  }
+});
 
 // 动态预加载图标
 const preloadIcons = (sites: Site[]) => {
@@ -103,34 +139,50 @@ const handlePageChange = (page: number) => {
   window.scrollTo({ top: 0, behavior: 'smooth' }); // 滚动到顶部
 };
 
-// 仅在 category 变化时触发请求
-watch(() => props.category, fetchSites, { immediate: true });
+watch(() => props.category, () => {
+  currentPage.value = 1; // 重置页码
+  fetchSites(); // 重新加载数据
+}, { immediate: true });
+
 watch(() => props.collapsed, () => {
-  fetchSites(); // collapsed 变化时重新加载数据
+  currentPage.value = 1; // 重置页码
+  fetchSites(); // 重新加载数据
 });
+
+
 </script>
 
 <style scoped>
+.site-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 4px; /* 保持紧凑间距 */
+  padding: 4px;
+  min-height: calc(100vh - 64px + 1px); /* 添加1px确保内容超出容器 */
+}
+
 .site-container {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  overflow-y: auto;
+  height: calc(100vh - 64px);
+  padding-bottom: 20px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.site-card {
+  width: 320px;
+  height: 120px;
+  margin: 0px;
+  /* box-sizing: border-box; */
 }
 
 .pagination {
   margin: 24px auto;
   text-align: center;
 }
-.site-grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-gap: 16px;
-padding: 16px;
-}
 
-.site-card {
-cursor: pointer;
-transition: transform 0.2s;
+.site-container::-webkit-scrollbar {
+  display: none;
 }
 
 .site-card:hover {
@@ -164,5 +216,20 @@ margin-bottom: 4px;
 font-size: 14px;
 color: #666;
 line-height: 1.4;
+}
+
+.site-container {
+  overflow-y: auto;
+  height: calc(100vh - 64px); /* 根据你的布局调整 */
+}
+
+.loading-indicator {
+  text-align: center;
+  padding: 16px;
+  color: #666;
+  position: sticky;
+  bottom: 0;
+  background: white;
+  z-index: 1;
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
-<div class="home-container">
+<div class="home-container" @wheel="handleWheel">
+ 
     <!-- 左侧标题和副标题区域 -->
     <div class="left-section">
     <div class="hero-section">
@@ -28,11 +29,53 @@
         </a>
     </p>
     </div>
+
 </div>
 </template>
 
 <script lang="ts" setup>
 import 'animate.css'; // 引入 animate.css
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const isScrolling = ref(false);
+
+const handleWheel = (event: WheelEvent) => {
+  if (isScrolling.value) return; // 防止重复触发
+  
+  // 只处理向下滚动
+  if (event.deltaY > 0) {
+    isScrolling.value = true;
+    
+    // 添加平滑滚动效果
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: 'smooth'
+    });
+
+    // 延迟跳转路由
+    setTimeout(() => {
+      router.push('/linkhub');
+      isScrolling.value = false;
+    }, 800); // 800ms后跳转，可以根据需要调整
+  }
+};
+
+// 可选：添加键盘事件监听
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.key === 'ArrowDown' || event.key === 'PageDown') {
+    router.push('/linkhub');
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown);
+});
 </script>
 
 <style scoped>
