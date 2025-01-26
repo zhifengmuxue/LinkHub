@@ -64,57 +64,6 @@ LinkHub 是一个专注于提升开发效率的工具集合平台。在这里，
   ```
 
 ---
-# LinkHub
-
-LinkHub 是一个专注于提升开发效率的工具集合平台。在这里，你可以快速找到前后端开发、文档查阅、工具推荐等资源，让开发变得更加简单和高效。无论是生成短链接、管理项目资源，还是探索开发工具，LinkHub 都致力于为开发者提供一站式的解决方案，帮助你在开发过程中节省时间、提高效率。
-
----
-
-## 项目结构
-
-### 前端 (`linkhub-frontend`)
-- **技术栈**：Vue 3 + TypeScript + Vite + Ant Design Vue
-- **主要功能**：
-  - 生成短链接
-  - 管理链接
-  - 工具页面（二维码生成、IP/域名查询等）
-- **目录结构**：
-  ```
-  linkhub-frontend/
-  ├── src/
-  │   ├── assets/            # 静态资源
-  │   ├── components/        # 组件
-  │   ├── views/             # 页面视图
-  │   ├── router/            # 路由配置
-  │   ├── main.ts            # 入口文件
-  │   └── App.vue            # 根组件
-  ├── vite.config.ts         # Vite 配置
-  └── env.d.ts               # 环境类型声明
-  ```
-
-### 后端 (`linkhub-backend`)
-- **技术栈**：Spring Boot + MySQL + MyBatisPlus + PaginationInnerInterceptor
-- **主要功能**：
-  - 提供短链接生成 API
-  - 管理链接数据
-- **目录结构**：
-  ```
-  linkhub-backend/
-  ├── src/
-  │   ├── main/
-  │   │   ├── java/
-  │   │   │   └── top/
-  │   │   │       └── zfmx/
-  │   │   │           └── linkhub/
-  │   │   │               ├── application/      # 应用层
-  │   │   │               ├── domain/           # 领域层
-  │   │   │               ├── infrastructure/   # 基础设施层
-  │   │   │               └── interfaces/       # 接口层
-  │   │   └── resources/   # 配置文件
-  └── pom.xml              # Maven 配置文件
-  ```
-
----
 
 ## 快速开始
 
