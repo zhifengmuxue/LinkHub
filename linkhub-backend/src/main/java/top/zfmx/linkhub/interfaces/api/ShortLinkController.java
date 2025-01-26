@@ -1,10 +1,10 @@
 package top.zfmx.linkhub.interfaces.api;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import top.zfmx.linkhub.application.ToolsService;
+import top.zfmx.linkhub.application.LinkService;
 
 import java.net.URI;
 import java.util.Map;
@@ -13,11 +13,8 @@ import java.util.Map;
 @RequestMapping("/link")
 public class ShortLinkController {
 
-    private final ToolsService toolsService;
-    @Autowired
-    public ShortLinkController(ToolsService toolsService) {
-        this.toolsService = toolsService;
-    }
+    @Resource
+    private LinkService linkService;
 
     // 生成短链接
     @PostMapping("/generate")
@@ -27,14 +24,14 @@ public class ShortLinkController {
             return ResponseEntity.badRequest().body("URL is required");
         }
 
-        String shortUrl = toolsService.generateShortUrl(originalUrl);
+        String shortUrl = linkService.generateShortUrl(originalUrl);
         return ResponseEntity.ok(Map.of("shortCode", shortUrl));
     }
 
     // 重定向到原始链接
     @GetMapping("/{shortCode}")
     public ResponseEntity<?> redirect(@PathVariable String shortCode) {
-        String originalUrl = toolsService.getOriginalUrl(shortCode);
+        String originalUrl = linkService.getOriginalUrl(shortCode);
         if (originalUrl == null) {
             return ResponseEntity.notFound().build();
         }

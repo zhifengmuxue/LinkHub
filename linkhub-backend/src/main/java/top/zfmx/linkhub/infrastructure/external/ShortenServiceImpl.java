@@ -1,7 +1,8 @@
-package top.zfmx.linkhub.domain.shortlink.service.impl;
+package top.zfmx.linkhub.infrastructure.external;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import top.zfmx.linkhub.domain.shortlink.entity.ShortUrl;
 import top.zfmx.linkhub.domain.shortlink.service.ShortenService;
@@ -9,7 +10,7 @@ import top.zfmx.linkhub.infrastructure.mapper.UrlMappingMapper;
 
 import java.util.Random;
 
-@Service
+@Component
 public class ShortenServiceImpl implements ShortenService {
 
     private final UrlMappingMapper urlMappingMapper;

@@ -1,14 +1,15 @@
-package top.zfmx.linkhub.domain.sites.service.impl;
+package top.zfmx.linkhub.infrastructure.external;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import top.zfmx.linkhub.domain.sites.entity.Site;
 import top.zfmx.linkhub.domain.sites.service.SiteService;
 import top.zfmx.linkhub.infrastructure.mapper.SiteMapper;
 import top.zfmx.linkhub.interfaces.dto.SiteDTO;
 
-@Service
+@Component
 public class SiteServiceImpl
         extends ServiceImpl<SiteMapper, Site>
         implements SiteService {
