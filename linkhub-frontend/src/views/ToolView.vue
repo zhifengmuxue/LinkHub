@@ -21,18 +21,6 @@
             </template>
             <span v-if="!collapsed">全部工具</span>
           </a-menu-item>
-          <a-menu-item key="1">
-            <template #icon>
-              <LinkOutlined />
-            </template>
-            <span v-if="!collapsed">链接工具</span>
-          </a-menu-item>
-          <a-menu-item key="2">
-            <template #icon>
-              <QrcodeOutlined />
-            </template>
-            <span v-if="!collapsed">二维码工具</span>
-          </a-menu-item>
           <a-menu-item key="btn" @click="toggleCollapsed">
             <template #icon>
               <MenuUnfoldOutlined v-if="collapsed" />
@@ -86,63 +74,52 @@
 import { ref, computed } from 'vue';
 import { 
   HomeOutlined,
-  LinkOutlined,
-  QrcodeOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined
 } from '@ant-design/icons-vue';
 import ShortenLink from '@/compents/tools/ShortenLink.vue'; 
 import QRGenerator from '@/compents/tools/QRGenerator.vue'; 
+import IpDomainLookup from '@/compents/tools/IpDomainLookup.vue';
 
 
 interface Tool {
   name: string;
   description: string;
   component: any;
-  category: string;
 }
 
-// 定义两个独立的工具
-const shortenTool = ref<Tool>({
-  name: '短链接生成',
-  description: '将长链接转换为短链接',
-  component: ShortenLink,
-  category: 'link'
-});
-
-const qrTool = ref<Tool>({
-  name: '二维码生成',
-  description: '生成任意内容的二维码',
-  component: QRGenerator,
-  category: 'qr'
-});
 
 const tools = ref<Tool[]>([
-  shortenTool.value,
-  qrTool.value
+  {
+    name: '短链接生成',
+    description: '将长链接转换为短链接',
+    component: ShortenLink,
+  },
+  {
+    name: '二维码生成',
+    description: '生成任意内容的二维码',
+    component: QRGenerator,
+  },
+  {
+    name: 'IP/域名查询',
+    description: '查询IP地址或域名的详细信息',
+    component: IpDomainLookup
+  }
 ]);
 
-const categoryMap = {
-  '0': '',       // 全部
-  '1': 'link',   // 链接工具
-  '2': 'qr'      // 二维码工具
-};
 
 const selectedKeys = ref<string[]>(['0']);
 const collapsed = ref(true);
 const modalVisible = ref(false);
 const selectedTool = ref<Tool | null>(null);
 
-const filteredTools = computed(() => {
-  const category = categoryMap[selectedKeys.value[0] as keyof typeof categoryMap];
-  return category ? tools.value.filter(tool => tool.category === category) : tools.value;
-});
+const filteredTools = computed(() => tools.value);
 
 const toggleCollapsed = () => {
   collapsed.value = !collapsed.value;
 };
 
-const handleMenuClick = ({ key }: { key: keyof typeof categoryMap | 'btn' }) => {
+const handleMenuClick = ({ key }: { key: string }) => {
   if (key === 'btn') return;
   selectedKeys.value = [key];
 };

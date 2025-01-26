@@ -133,11 +133,6 @@ onMounted(() => {
   fetchSites();
 });
 
-const handlePageChange = (page: number) => {
-  currentPage.value = page;
-  fetchSites(); // 切换页码时重新加载数据
-  window.scrollTo({ top: 0, behavior: 'smooth' }); // 滚动到顶部
-};
 
 watch(() => props.category, () => {
   currentPage.value = 1; // 重置页码
