@@ -39,8 +39,25 @@ public class IpLookupServiceImpl implements IpLookupService {
 
     @Override
     public LookupResult lookup(String query) {
-        if (INVALID_IPS.contains(query)) {
-            throw new InvalidIpException("不支持查询特殊IP地址: " + query);
+        if (query == null || query.trim().isEmpty()) {
+            throw new IllegalArgumentException("查询参数不能为空");
+        }
+
+        // 特殊IP地址过滤
+        String[] invalidIPs = {"0.0.0.0", "127.0.0.1", "255.255.255.255"};
+        for (String invalidIP : invalidIPs) {
+            if (invalidIP.equals(query)) {
+                throw new IllegalArgumentException("不支持查询特殊IP地址：" + query);
+            }
+        }
+
+        // IP/域名格式验证
+        String ipv4Pattern = "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+        String ipv6Pattern = "^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$";
+        String domainPattern = "^(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\\.[A-Za-z]{2,})+$";
+
+        if (!query.matches(ipv4Pattern) && !query.matches(ipv6Pattern) && !query.matches(domainPattern)) {
+            throw new IllegalArgumentException("无效的查询参数：" + query);
         }
 
         try {
@@ -48,7 +65,6 @@ public class IpLookupServiceImpl implements IpLookupService {
             HttpGet request = new HttpGet(uri);
 
             return HTTP_CLIENT.execute(request, response -> {
-                // 6. 增加状态码检查
                 int statusCode = response.getStatusLine().getStatusCode();
                 if (statusCode != HttpStatus.SC_OK) {
                     throw new IOException("API 请求失败，状态码: " + statusCode);

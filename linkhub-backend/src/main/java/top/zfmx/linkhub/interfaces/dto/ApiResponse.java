@@ -2,24 +2,33 @@ package top.zfmx.linkhub.interfaces.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class ApiResponse<T> {
     private int code;
     private String message;
-    private T data;
+    private T resultData;
+    private long timestamp;
 
+    public ApiResponse(){
+        this.timestamp = System.currentTimeMillis();
+    }
     // 成功响应静态方法
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(200, "Success", data);
+        ApiResponse<T> response = new ApiResponse<>();
+        response.setCode(200);
+        response.setMessage("success");
+        response.setResultData(data);
+        return response;
     }
 
     // 失败响应静态方法
     public static <T> ApiResponse<T> fail(int code, String message) {
-        return new ApiResponse<>(code, message, null);
+        ApiResponse<T> response = new ApiResponse<>();
+        response.setCode(code);
+        response.setMessage(message);
+        return response;
     }
 
 }

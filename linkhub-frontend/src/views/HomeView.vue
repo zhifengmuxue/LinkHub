@@ -42,27 +42,23 @@ const router = useRouter();
 const isScrolling = ref(false);
 
 const handleWheel = (event: WheelEvent) => {
-  if (isScrolling.value) return; // 防止重复触发
-  
-  // 只处理向下滚动
+  if (isScrolling.value) return;
+
   if (event.deltaY > 0) {
     isScrolling.value = true;
     
-    // 添加平滑滚动效果
     window.scrollTo({
       top: document.body.scrollHeight,
       behavior: 'smooth'
     });
 
-    // 延迟跳转路由
     setTimeout(() => {
       router.push('/linkhub');
       isScrolling.value = false;
-    }, 800); // 800ms后跳转，可以根据需要调整
+    }, 800); 
   }
 };
 
-// 可选：添加键盘事件监听
 const handleKeyDown = (event: KeyboardEvent) => {
   if (event.key === 'ArrowDown' || event.key === 'PageDown') {
     router.push('/linkhub');
@@ -70,10 +66,12 @@ const handleKeyDown = (event: KeyboardEvent) => {
 };
 
 onMounted(() => {
+  window.addEventListener('wheel', handleWheel, { passive: true }); // 添加 { passive: true }
   window.addEventListener('keydown', handleKeyDown);
 });
 
 onUnmounted(() => {
+  window.removeEventListener('wheel', handleWheel);
   window.removeEventListener('keydown', handleKeyDown);
 });
 </script>

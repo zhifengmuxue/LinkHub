@@ -9,7 +9,7 @@
         @click="openSite(site.url)"
     >
         <div class="card-content">
-        <img class="site-icon" :src="site.icon" :alt="site.name" />
+        <img class="site-icon" :src="site.icon" :alt="site.name" crossorigin="anonymous"/>
         <div class="site-info">
             <div class="site-name">{{ site.name }}</div>
             <div class="site-description">{{ site.description }}</div>
@@ -72,12 +72,12 @@ const fetchSites = async (isLoadMore = false) => {
     });
     if (response.data.code === 200) {
       if (isLoadMore) {
-        sites.value = [...sites.value, ...response.data.data.records];
+        sites.value = [...sites.value, ...response.data.resultData.records];
       } else {
-        sites.value = response.data.data.records;
+        sites.value = response.data.resultData.records;
       }
-      total.value = response.data.data.total;
-      preloadIcons(response.data.data.records);
+      total.value = response.data.resultData.total;
+      preloadIcons(response.data.resultData.records);
     }
   } catch (error) {
     console.error('Error fetching sites:', error);

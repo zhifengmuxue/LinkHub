@@ -38,103 +38,63 @@ import { message } from 'ant-design-vue';
 import axios from 'axios';
 
 interface LookupResult {
-ip: string;
-isp: string;
-asn: string;
-org: string;
-country: string;
-city: string;
+  ip: string;
+  isp: string;
+  asn: string;
+  org: string;
+  country: string;
+  city: string;
+}
+
+interface ApiResponse {
+  code: number;
+  message: string;
+  resultData: LookupResult | null;
+  timestamp: number;
 }
 
 const query = ref('');
 const result = ref<LookupResult | null>(null);
 const isLoading = ref(false);
-
 const lookup = async () => {
-if (!query.value) {
-    message.warning({
-    content: '请输入要查询的IP地址或域名',
-    duration: 3,
-    });
+  if (!query.value.trim()) {
+    message.warning('请输入要查询的IP地址或域名');
     return;
-}
+  }
 
-const input = query.value.trim();
-
-// 特殊IP地址过滤
-const invalidIPs = ['0.0.0.0', '127.0.0.1', '255.255.255.255'];
-if (invalidIPs.includes(input)) {
-    message.error({
-    content: '不支持查询以下特殊IP地址：\n' +
-                '• 0.0.0.0 - 无效地址\n' +
-                '• 127.0.0.1 - 本地回环地址\n' +
-                '• 255.255.255.255 - 广播地址\n' +
-                '这些地址具有特殊用途，无法提供有效信息',
-    duration: 5,
-    style: {
-        whiteSpace: 'pre-line',
-    },
-    });
-    return;
-}
-
-// IP/域名格式验证
-const ipv4Pattern = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-const ipv6Pattern = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
-const domainPattern = /^(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z]{2,})+$/;
-
-if (!ipv4Pattern.test(input) && !ipv6Pattern.test(input) && !domainPattern.test(input)) {
-    message.error({
-    content: '请输入有效的IP地址或域名\n\n' +
-                '有效格式示例：\n' +
-                '• IPv4地址：192.168.1.1\n' +
-                '• IPv6地址：2001:0db8:85a3:0000:0000:8a2e:0370:7334\n' +
-                '• 域名：example.com',
-    duration: 5,
-    style: {
-        whiteSpace: 'pre-line',
-    },
-    });
-    return;
-}
-
-if (input.length > 253) {
-    message.error('输入内容过长，请检查后重试');
-    return;
-}
-
-isLoading.value = true;
-try {
-    const response = await axios.get('/api/lookup', {
-    params: {
-        query: encodeURIComponent(input),
-    },
+  isLoading.value = true;
+  try {
+    const response = await axios.get<ApiResponse>('/api/lookup', {
+      params: { query: query.value.trim() }
     });
 
-    result.value = {
-    ip: response.data.ip || response.data.query,
-    isp: response.data.isp,
-    asn: response.data.asn || response.data.as,
-    org: response.data.org,
-    country: response.data.country,
-    city: response.data.city,
-    };
-} catch (error) {
-    console.error('查询失败:', error);
-    message.error({
-    content: '查询失败，可能原因：\n' +
-                '1. 网络连接异常\n' +
-                '2. 输入内容无效\n' +
-                '3. 服务暂时不可用\n' +
-                '请稍后重试或检查输入内容',
-    duration: 5,
-    style: {
-        whiteSpace: 'pre-line',
-    },
-    });
-} finally {
+    console.log('API 响应:', response.data);
+
+    if (response.data.code === 200 && response.data.resultData) {
+      // 逐个字段赋值，确保 Vue 响应式系统正确追踪
+      result.value = {
+        ip: response.data.resultData.ip || '-',
+        isp: response.data.resultData.isp || '-',
+        asn: response.data.resultData.asn || '-',
+        org: response.data.resultData.org || '-',
+        country: response.data.resultData.country || '-',
+        city: response.data.resultData.city || '-',
+      };
+      console.log('解析后的结果:', result.value);
+    } else {
+      message.error(response.data.message || '未知错误');
+    }
+  } catch (error) {
+    console.error('请求失败:', error);
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || error.message;
+      message.error(`查询失败: ${errorMessage}`);
+    } else {
+      message.error('网络请求异常');
+    }
+  } finally {
     isLoading.value = false;
-}
+  }
 };
 </script>
 
