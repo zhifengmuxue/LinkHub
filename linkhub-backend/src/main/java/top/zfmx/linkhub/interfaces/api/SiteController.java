@@ -20,7 +20,7 @@ public class SiteController {
     }
 
     @GetMapping("/api/sites")
-    public ApiResponse<Page<SiteDTO>> getSitesWithCategoryByPage(
+    public ApiResponse<Page<SiteDTO>> getSitesByPage(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
         Page<SiteDTO> sitePage = linkhubService.getRecords(page, size, null);

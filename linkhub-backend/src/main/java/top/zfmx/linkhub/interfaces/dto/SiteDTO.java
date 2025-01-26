@@ -9,5 +9,4 @@ public class SiteDTO {
     private String icon;
     private String description;
     private String categoryName;
-//    private String categoryDescription;
 }

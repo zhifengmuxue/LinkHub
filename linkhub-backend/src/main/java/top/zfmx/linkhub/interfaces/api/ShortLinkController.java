@@ -5,18 +5,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import top.zfmx.linkhub.application.ToolsService;
-import top.zfmx.linkhub.domain.shortlink.service.ShortenService;
 
 import java.net.URI;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/link")
-public class ToolsController {
+public class ShortLinkController {
 
     private final ToolsService toolsService;
     @Autowired
-    public ToolsController(ToolsService toolsService) {
+    public ShortLinkController(ToolsService toolsService) {
         this.toolsService = toolsService;
     }
 
