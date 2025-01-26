@@ -9,7 +9,7 @@
         @click="openSite(site.url)"
     >
         <div class="card-content">
-        <img class="site-icon" :src="site.icon" :alt="site.name" crossorigin="anonymous"/>
+        <img class="site-icon" :src="site.icon" :alt="site.name"/>
         <div class="site-info">
             <div class="site-name">{{ site.name }}</div>
             <div class="site-description">{{ site.description }}</div>
